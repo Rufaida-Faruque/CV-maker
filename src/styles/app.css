@@ -1,0 +1,17 @@
+/* Legacy app shell — workspace uses workspace.css for print */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .cv {
+    box-shadow: none !important;
+    max-width: none;
+    width: 210mm;
+  }
+}
