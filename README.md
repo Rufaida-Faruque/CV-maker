@@ -1,28 +1,50 @@
 # CV Maker
 
-Personal CV editor with Google sign-in. Each user’s CV is stored as `cv-maker.json` in their own Google Drive (via the `drive.file` scope).
+**Live app:** [https://cv-maker-tau-one.vercel.app/](https://cv-maker-tau-one.vercel.app/)
+
+A personal CV builder with Google sign-in. Edit on the left, preview on the right, and save to your own Google Drive. Each account gets a private `cv-maker.json` file (only this app can access it via the `drive.file` scope).
+
+## Features
+
+- Sign in with Google — no separate password
+- Multiple CV versions (master + copies) with selective sync from master
+- Layouts: Classic, European, Professional sidebar, Creative timeline
+- Custom colors and PDF download
+- Certificates & attachments (PDF, images) appended to exported PDF
+- Auto-save to Google Drive every 3 minutes
+
+## Try it
+
+👉 **[Open CV Maker](https://cv-maker-tau-one.vercel.app/)**
 
 ## Local development
 
 ```bash
 npm install
 cp .env.example .env
-# Add VITE_GOOGLE_CLIENT_ID from Google Cloud Console
+```
+
+Add your OAuth Web client ID to `.env`:
+
+```env
+VITE_GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
+```
+
+```bash
 npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173).
 
-## Production — any Google user can log in
+While Google OAuth is in **Testing** mode, add your Gmail under **Test users** in [Google Cloud Console](https://console.cloud.google.com/).
 
-**You configure Google Cloud Console, not special code in this repo.**
+## Deploy your own copy
 
-1. Read **[PRODUCTION.md](./PRODUCTION.md)** (step-by-step).
-2. Set `VITE_GOOGLE_CLIENT_ID` on your host (Vercel, Netlify, etc.).
-3. OAuth consent screen → **Publish app** (move out of Testing).
-4. Add your production HTTPS URL to **Authorized JavaScript origins**.
+See **[PRODUCTION.md](./PRODUCTION.md)** for:
 
-While the app is in **Testing** mode, only emails listed under **Test users** on the consent screen can sign in.
+- Setting `VITE_GOOGLE_CLIENT_ID` on Vercel (or another host)
+- OAuth consent screen and **Publish app** so any Google user can sign in
+- Authorized JavaScript origins for your domain
 
 ## Build
 
@@ -31,11 +53,15 @@ npm run build
 npm run preview
 ```
 
-Output is in `dist/`.
+Static output is in `dist/`.
 
 ## Stack
 
-- React + TypeScript + Vite
-- Google OAuth (`@react-oauth/google`)
+- React 19 + TypeScript + Vite
+- Google OAuth ([`@react-oauth/google`](https://www.npmjs.com/package/@react-oauth/google))
 - Google Drive API (`drive.file`)
-- PDF export (html2canvas + jsPDF)
+- PDF export (html2canvas + jsPDF + pdf-lib for attachments)
+
+## License
+
+Private / personal project — adjust as needed for your fork.
