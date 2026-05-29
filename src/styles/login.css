@@ -1,34 +1,213 @@
 .login-page {
+  --login-green: #16a34a;
+  --login-green-dark: #14532d;
+  --login-green-light: #86efac;
+  --login-green-glow: rgba(34, 197, 94, 0.45);
+
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: #e8eaed;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #052e16 0%,
+    #166534 35%,
+    #15803d 65%,
+    #14532d 100%
+  );
+  background-size: 200% 200%;
+  animation: login-gradient 12s ease infinite;
+}
+
+@keyframes login-gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.login-page__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.login-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  animation: login-float-blob 8s ease-in-out infinite;
+}
+
+.login-blob--1 {
+  width: 280px;
+  height: 280px;
+  background: #4ade80;
+  top: -80px;
+  left: -60px;
+  animation-delay: 0s;
+}
+
+.login-blob--2 {
+  width: 220px;
+  height: 220px;
+  background: #22c55e;
+  bottom: -40px;
+  right: 10%;
+  animation-delay: -2s;
+}
+
+.login-blob--3 {
+  width: 160px;
+  height: 160px;
+  background: #bbf7d0;
+  top: 40%;
+  right: -40px;
+  animation-delay: -4s;
+}
+
+.login-float {
+  position: absolute;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  animation: login-drift 10s ease-in-out infinite;
+}
+
+.login-float--doc {
+  width: 72px;
+  height: 96px;
+  top: 18%;
+  left: 12%;
+  animation-delay: -1s;
+}
+
+.login-float--spark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  bottom: 22%;
+  left: 20%;
+  animation-delay: -3s;
+}
+
+@keyframes login-float-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -16px) scale(1.05);
+  }
+}
+
+@keyframes login-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-18px) rotate(6deg);
+    opacity: 0.55;
+  }
 }
 
 .login-card {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 20px;
+  padding: 2rem 2rem 1.75rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  animation: login-card-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.login-card h1 {
+@keyframes login-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--login-green);
+  animation: login-fade-in 0.6s ease 0.15s both;
+}
+
+.login-card__title {
   margin: 0 0 0.75rem;
-  font-family: system-ui, sans-serif;
-  font-size: 1.5rem;
-  color: #424d61;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--login-green-dark);
+  animation: login-fade-in 0.6s ease 0.25s both;
 }
 
-.login-card p {
-  margin: 0 0 1.5rem;
+.login-card__title-accent {
+  display: block;
+  color: var(--login-green);
+}
+
+.login-card__lead {
+  margin: 0 0 1.25rem;
   font-family: system-ui, sans-serif;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: #4b5563;
+  animation: login-fade-in 0.6s ease 0.35s both;
+}
+
+.login-features {
+  margin: 0 0 1.5rem;
+  padding: 0 0 0 1.1rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #374151;
+  animation: login-fade-in 0.6s ease 0.45s both;
+}
+
+.login-features li {
+  margin-bottom: 0.2rem;
+}
+
+.login-features li::marker {
+  color: var(--login-green);
+}
+
+@keyframes login-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .google-btn {
@@ -37,18 +216,42 @@
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+  background-size: 200% 200%;
+  color: #fff;
   font-family: system-ui, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 8px 24px var(--login-green-glow);
+  animation:
+    login-fade-in 0.6s ease 0.55s both,
+    login-btn-glow 3s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes login-btn-glow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 8px 24px var(--login-green-glow);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 10px 32px rgba(34, 197, 94, 0.55);
+  }
 }
 
 .google-btn:hover:not(:disabled) {
-  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.5);
+}
+
+.google-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .google-btn:disabled {
@@ -64,11 +267,12 @@
 }
 
 .login-hint {
-  margin: 0 0 1rem;
+  margin: 1rem 0 0;
   font-family: system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   line-height: 1.45;
   color: #6b7280;
+  text-align: center;
 }
 
 .login-legal {
@@ -79,9 +283,15 @@
 }
 
 .login-legal a {
-  color: #6b7280;
+  color: var(--login-green);
+  font-weight: 500;
 }
 
+.login-legal a:hover {
+  color: var(--login-green-dark);
+}
+
+/* Setup page reuses login-page layout */
 .setup-steps {
   margin: 0;
   padding-left: 1.25rem;
@@ -93,7 +303,27 @@
 
 .setup-steps code {
   font-size: 0.8rem;
-  background: #f3f4f6;
+  background: #f0fdf4;
+  color: #166534;
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page,
+  .login-blob,
+  .login-float,
+  .google-btn,
+  .login-card,
+  .login-card__eyebrow,
+  .login-card__title,
+  .login-card__lead,
+  .login-features {
+    animation: none;
+  }
+
+  .login-card {
+    opacity: 1;
+    transform: none;
+  }
 }

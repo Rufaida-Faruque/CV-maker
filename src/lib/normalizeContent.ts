@@ -2,6 +2,7 @@ import { createSectionId } from "./ids";
 import { toIsoDate } from "./dateFormat";
 import { splitFullName } from "./headerName";
 import { ensureTheme } from "./themes";
+import { normalizeLinkField } from "./linkField";
 import type {
   CvContent,
   CvSection,
@@ -65,8 +66,8 @@ function normalizePersonal(section: CvSection): CvSection {
       address: d.address ?? "",
       postCode: d.postCode ?? "",
       city: d.city ?? "",
-      linkedIn: d.linkedIn ?? { label: "", href: "" },
-      github: d.github ?? { label: "", href: "" },
+      linkedIn: normalizeLinkField(d.linkedIn),
+      github: normalizeLinkField(d.github),
       customFields: migrateLegacyLinks(d),
     },
   };

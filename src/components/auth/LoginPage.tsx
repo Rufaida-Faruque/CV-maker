@@ -16,22 +16,42 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
+      <div className="login-page__bg" aria-hidden="true">
+        <span className="login-blob login-blob--1" />
+        <span className="login-blob login-blob--2" />
+        <span className="login-blob login-blob--3" />
+        <span className="login-float login-float--doc" />
+        <span className="login-float login-float--spark" />
+      </div>
+
       <div className="login-card">
-        <h1>CV Maker</h1>
-        <p>
-          Personal CV editor — sign in with your Google account. Your CV is saved
-          as a private file in your Google Drive (only this app can access it).
+        <p className="login-card__eyebrow">Build · polish · shine</p>
+        <h1 className="login-card__title">
+          Your CV,
+          <span className="login-card__title-accent"> your story</span>
+        </h1>
+        <p className="login-card__lead">
+          Create multiple versions, pick a layout you love, and keep everything
+          safe in your own Google Drive.
         </p>
-        <p className="login-hint">
-          When prompted, allow access to save your CV to Google Drive. If sign-in
-          is blocked, the app owner must publish the OAuth app in Google Cloud
-          Console (see PRODUCTION.md).
-        </p>
+
+        <ul className="login-features">
+          <li>Multiple CV versions from one profile</li>
+          <li>Live editor with print-ready preview</li>
+          <li>Only you can access your file</li>
+        </ul>
+
         <button type="button" className="google-btn" onClick={handleLogin}>
           <GoogleIcon />
           Continue with Google
         </button>
+
         {error && <p className="login-error">{error}</p>}
+
+        <p className="login-hint">
+          Allow Google Drive when asked — that’s how we save your CV privately.
+        </p>
+
         <p className="login-legal">
           <a href="/privacy.html" target="_blank" rel="noreferrer">
             Privacy Policy

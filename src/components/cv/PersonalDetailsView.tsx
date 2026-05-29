@@ -1,4 +1,5 @@
 import { formatDisplayDate } from "../../lib/dateFormat";
+import { linkFieldIsEmpty } from "../../lib/linkField";
 import type { CustomField, LinkField, PersonalDetailsData } from "../../types/cv";
 
 function isUrl(value: string): boolean {
@@ -20,7 +21,7 @@ function LinkRow({
   field: LinkField;
   dark?: boolean;
 }) {
-  if (!field.href && !field.label) return null;
+  if (linkFieldIsEmpty(field)) return null;
   const text = field.label || field.href.replace(/^https?:\/\//, "");
   return (
     <div className="cv-details__item">

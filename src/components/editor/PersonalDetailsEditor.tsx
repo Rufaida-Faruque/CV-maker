@@ -6,9 +6,9 @@ import type {
   CvSection,
   CustomField,
   HeaderData,
-  LinkField,
   PersonalDetailsData,
 } from "../../types/cv";
+import { linkDisplay, patchLinkField } from "../../lib/linkField";
 import PhotoCropModal from "./PhotoCropModal";
 
 interface PersonalDetailsEditorProps {
@@ -16,26 +16,6 @@ interface PersonalDetailsEditorProps {
   personal: CvSection | undefined;
   onChange: (content: CvContent) => void;
   content: CvContent;
-}
-
-function normalizeHref(value: string): string {
-  const v = value.trim();
-  if (!v) return "";
-  if (v.startsWith("http://") || v.startsWith("https://")) return v;
-  return `https://${v}`;
-}
-
-function linkDisplay(field: LinkField): string {
-  return field.href || field.label;
-}
-
-function patchLinkField(field: LinkField, raw: string): LinkField {
-  const v = raw.trim();
-  const href = normalizeHref(v);
-  return {
-    href,
-    label: v.replace(/^https?:\/\//, "") || field.label,
-  };
 }
 
 export default function PersonalDetailsEditor({
