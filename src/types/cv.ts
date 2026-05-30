@@ -46,6 +46,8 @@ export interface EducationData {
   degree: string;
   institution: string;
   period: string;
+  /** e.g. CGPA, honors, relevant coursework */
+  additionalInfo?: string;
 }
 
 export interface BulletListData {
@@ -59,6 +61,8 @@ export interface TextData {
 export interface ProjectItem {
   name: string;
   url: string;
+  /** Optional short description shown under the project name */
+  description?: string;
 }
 
 export interface ProjectsData {

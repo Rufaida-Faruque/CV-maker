@@ -54,6 +54,17 @@ export default function SectionEditor({
             placeholder="Jan 2023 - Sep 2026"
           />
         </label>
+        <label>
+          Additional info
+          <input
+            value={d.additionalInfo ?? ""}
+            disabled={disabled}
+            onChange={(e) =>
+              patchData({ ...d, additionalInfo: e.target.value })
+            }
+            placeholder="CGPA 3.87, Dean's list, relevant coursework…"
+          />
+        </label>
       </div>
     );
   }
@@ -148,6 +159,23 @@ export default function SectionEditor({
                 placeholder="https://..."
               />
             </label>
+            <label>
+              Description <span className="editor-label-hint">(optional)</span>
+              <textarea
+                rows={2}
+                value={item.description ?? ""}
+                disabled={disabled}
+                onChange={(e) => {
+                  const items = [...d.items];
+                  items[index] = {
+                    ...items[index],
+                    description: e.target.value,
+                  };
+                  patchData({ items });
+                }}
+                placeholder="One line about the project"
+              />
+            </label>
             <button
               type="button"
               className="editor-btn editor-btn--ghost"
@@ -155,7 +183,9 @@ export default function SectionEditor({
               onClick={() => {
                 const items = d.items.filter((_, i) => i !== index);
                 patchData({
-                  items: items.length ? items : [{ name: "", url: "" }],
+                  items: items.length
+                    ? items
+                    : [{ name: "", url: "", description: "" }],
                 });
               }}
             >
@@ -168,7 +198,9 @@ export default function SectionEditor({
           className="editor-btn editor-btn--ghost"
           disabled={disabled}
           onClick={() =>
-            patchData({ items: [...d.items, { name: "", url: "" }] })
+            patchData({
+              items: [...d.items, { name: "", url: "", description: "" }],
+            })
           }
         >
           + Add project

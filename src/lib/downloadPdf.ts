@@ -1,4 +1,11 @@
 import type { CvAttachment } from "../types/cv";
+import {
+  collectSectionBreaks,
+  computePageSlices,
+  createPdfMount,
+  PDF_PAGE_WIDTH_PX,
+  removePdfMount,
+} from "./pdfExport";
 
 const DEFAULT_FILENAME = "CV.pdf";
 
@@ -14,21 +21,26 @@ export async function downloadCvPdf(
     import("jspdf"),
   ]);
 
-  element.classList.add("cv--pdf-export");
+  const mount = createPdfMount();
+  const clone = element.cloneNode(true) as HTMLElement;
+  clone.classList.add("cv--pdf-export");
+  clone.style.width = `${PDF_PAGE_WIDTH_PX}px`;
+  clone.style.maxWidth = `${PDF_PAGE_WIDTH_PX}px`;
+  mount.appendChild(clone);
   await waitForLayout();
 
   try {
-    const canvas = await html2canvas(element, {
+    const canvas = await html2canvas(clone, {
       scale: 2,
       useCORS: true,
       logging: false,
       backgroundColor: "#ffffff",
       scrollX: 0,
-      scrollY: -window.scrollY,
-      width: element.offsetWidth,
-      height: element.scrollHeight,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
+      scrollY: 0,
+      width: clone.offsetWidth,
+      height: clone.scrollHeight,
+      windowWidth: clone.scrollWidth,
+      windowHeight: clone.scrollHeight,
     });
 
     const pdf = new jsPDF({
@@ -39,16 +51,24 @@ export async function downloadCvPdf(
 
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 0;
-    const imgWidth = pageWidth - margin * 2;
+    const imgWidth = pageWidth;
     const pageHeightPx = (canvas.width * pageHeight) / imgWidth;
-    let offsetY = 0;
-    let pageIndex = 0;
+    const domToCanvas = canvas.height / clone.scrollHeight;
 
-    while (offsetY < canvas.height) {
-      if (pageIndex > 0) pdf.addPage();
+    const sectionBreaks = collectSectionBreaks(clone).map((y) =>
+      Math.round(y * domToCanvas),
+    );
+    const slices = computePageSlices(
+      canvas.height,
+      Math.round(pageHeightPx),
+      sectionBreaks,
+    );
 
-      const sliceHeight = Math.min(pageHeightPx, canvas.height - offsetY);
+    for (let i = 0; i < slices.length; i += 1) {
+      if (i > 0) pdf.addPage();
+
+      const { start, end } = slices[i];
+      const sliceHeight = end - start;
       const sliceCanvas = document.createElement("canvas");
       sliceCanvas.width = canvas.width;
       sliceCanvas.height = sliceHeight;
@@ -58,7 +78,7 @@ export async function downloadCvPdf(
       ctx.drawImage(
         canvas,
         0,
-        offsetY,
+        start,
         canvas.width,
         sliceHeight,
         0,
@@ -69,16 +89,13 @@ export async function downloadCvPdf(
 
       const sliceHeightMm = (sliceHeight * imgWidth) / canvas.width;
       pdf.addImage(
-        sliceCanvas.toDataURL("image/jpeg", 0.95),
+        sliceCanvas.toDataURL("image/jpeg", 0.92),
         "JPEG",
-        margin,
-        margin,
+        0,
+        0,
         imgWidth,
-        sliceHeightMm,
+        Math.min(sliceHeightMm, pageHeight),
       );
-
-      offsetY += pageHeightPx;
-      pageIndex += 1;
     }
 
     addNonPdfAttachmentPages(pdf, attachments, pageWidth, pageHeight);
@@ -91,6 +108,7 @@ export async function downloadCvPdf(
       pdf.save(filename);
     }
   } finally {
+    removePdfMount(mount);
     element.classList.remove("cv--pdf-export");
   }
 }

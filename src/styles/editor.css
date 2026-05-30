@@ -173,6 +173,11 @@
   grid-column: 1 / -1;
 }
 
+.editor-label-hint {
+  font-weight: 400;
+  color: #9ca3af;
+}
+
 .editor-fields label {
   display: flex;
   flex-direction: column;

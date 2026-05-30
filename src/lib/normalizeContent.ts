@@ -7,8 +7,11 @@ import type {
   CvContent,
   CvSection,
   CustomField,
+  EducationData,
   HeaderData,
   PersonalDetailsData,
+  ProjectItem,
+  ProjectsData,
 } from "../types/cv";
 
 function normalizeHeader(section: CvSection): CvSection {
@@ -73,10 +76,38 @@ function normalizePersonal(section: CvSection): CvSection {
   };
 }
 
+function normalizeEducation(section: CvSection): CvSection {
+  const d = section.data as EducationData;
+  return {
+    ...section,
+    data: {
+      degree: d.degree ?? "",
+      institution: d.institution ?? "",
+      period: d.period ?? "",
+      additionalInfo: d.additionalInfo ?? "",
+    },
+  };
+}
+
+function normalizeProjects(section: CvSection): CvSection {
+  const d = section.data as ProjectsData;
+  const items: ProjectItem[] = (d.items ?? []).map((item) => ({
+    name: item.name ?? "",
+    url: item.url ?? "",
+    description: item.description ?? "",
+  }));
+  return {
+    ...section,
+    data: { items: items.length ? items : [{ name: "", url: "", description: "" }] },
+  };
+}
+
 export function normalizeCvContent(raw: CvContent): CvContent {
   const sections = (raw.sections ?? []).map((s) => {
     if (s.type === "header") return normalizeHeader(s);
     if (s.type === "personalDetails") return normalizePersonal(s);
+    if (s.type === "education") return normalizeEducation(s);
+    if (s.type === "projects") return normalizeProjects(s);
     return s;
   });
 

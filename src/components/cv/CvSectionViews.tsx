@@ -44,15 +44,20 @@ export function SkillBars({ items }: { items: string[] }) {
 }
 
 export function ProjectList({ items }: { items: ProjectsData["items"] }) {
-  const visible = items.filter((p) => p.name.trim() || p.url.trim());
+  const visible = items.filter(
+    (p) => p.name.trim() || p.url.trim() || (p.description ?? "").trim(),
+  );
   if (!visible.length) return null;
   return (
     <ul className="cv-bullets cv-bullets--projects">
       {visible.map((project) => (
         <li key={project.url || project.name}>
           {project.name && (
-            <span className="cv-project-name">{project.name}:</span>
-          )}{" "}
+            <span className="cv-project-name">{project.name}</span>
+          )}
+          {(project.description ?? "").trim() && (
+            <p className="cv-project-desc">{project.description}</p>
+          )}
           {project.url ? (
             <a href={project.url} target="_blank" rel="noreferrer">
               {project.url}
@@ -75,6 +80,9 @@ export function EducationBlock({ data }: { data: EducationData }) {
       {data.institution && (
         <p className="cv-education__institution">{data.institution}</p>
       )}
+      {(data.additionalInfo ?? "").trim() && (
+        <p className="cv-education__extra">{data.additionalInfo}</p>
+      )}
     </div>
   );
 }
@@ -92,6 +100,9 @@ export function TimelineEntry({ data }: { data: EducationData }) {
         )}
         {data.institution && (
           <p className="cv-timeline-entry__subtitle">{data.institution}</p>
+        )}
+        {(data.additionalInfo ?? "").trim() && (
+          <p className="cv-timeline-entry__extra">{data.additionalInfo}</p>
         )}
       </div>
     </div>

@@ -8,14 +8,190 @@
   overflow: hidden;
 }
 
+/* Off-screen mount for PDF capture (full A4 width, not preview-scaled) */
+.cv-pdf-mount {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: visible;
+}
+
 .cv--pdf-export {
   box-shadow: none !important;
-  max-width: 210mm;
-  width: 210mm;
+  max-width: 210mm !important;
+  width: 210mm !important;
+  font-size: 10pt;
+  line-height: 1.35;
 }
 
 .cv--pdf-export .cv-body {
   min-height: auto !important;
+}
+
+/* Standard CV typography for PDF (10–11pt body, ~18pt name) */
+.cv--pdf-export .cv-header {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 1.25rem 0.5rem;
+}
+
+.cv--pdf-export .cv-header__name {
+  font-size: 18pt;
+  margin-bottom: 0.2rem;
+}
+
+.cv--pdf-export .cv-header__headline {
+  font-size: 10pt;
+  margin-bottom: 0.2rem;
+}
+
+.cv--pdf-export .cv-header__email {
+  font-size: 9pt;
+}
+
+.cv--pdf-export .cv-header__photo {
+  width: 72px;
+  height: 72px;
+}
+
+.cv--pdf-export .cv-main {
+  padding: 0.55rem 1.1rem 0.65rem 1.25rem;
+}
+
+.cv--pdf-export .cv-sidebar {
+  padding: 0.55rem 1rem 0.65rem 0.9rem;
+}
+
+.cv--pdf-export .cv-body--single {
+  padding: 0.55rem 1.25rem 0.65rem;
+}
+
+.cv--pdf-export .cv-section {
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.45rem;
+  page-break-inside: avoid;
+}
+
+.cv--pdf-export .cv-section__title {
+  font-size: 11pt;
+  margin-bottom: 0.35rem;
+}
+
+.cv--pdf-export .cv-education__degree {
+  font-size: 10pt;
+}
+
+.cv--pdf-export .cv-education__period,
+.cv--pdf-export .cv-education__institution,
+.cv--pdf-export .cv-education__extra {
+  font-size: 9.5pt;
+}
+
+.cv--pdf-export .cv-education__extra {
+  margin: 0.15rem 0 0;
+  color: #374151;
+}
+
+.cv--pdf-export .cv-bullets li {
+  font-size: 9.5pt;
+  line-height: 1.35;
+  padding-left: 0.75rem;
+}
+
+.cv--pdf-export .cv-bullets {
+  row-gap: 0.1rem;
+  column-gap: 1rem;
+}
+
+.cv--pdf-export .cv-text {
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+
+.cv--pdf-export .cv-project-name {
+  font-size: 10pt;
+}
+
+.cv--pdf-export .cv-project-desc {
+  font-size: 9.5pt;
+}
+
+.cv--pdf-export .cv-bullets--projects a {
+  font-size: 9pt;
+}
+
+.cv--pdf-export .cv-details dt {
+  font-size: 8.5pt;
+}
+
+.cv--pdf-export .cv-details dd {
+  font-size: 9.5pt;
+}
+
+.cv--pdf-export .cv-professional__sidebar {
+  padding: 0.85rem 0.9rem 0.65rem;
+}
+
+.cv--pdf-export .cv-professional__name {
+  font-size: 16pt;
+}
+
+.cv--pdf-export .cv-professional__headline {
+  font-size: 9.5pt;
+}
+
+.cv--pdf-export .cv-professional__main {
+  padding: 0.75rem 1.1rem 0.65rem;
+}
+
+.cv--pdf-export .cv-professional__sidebar .cv-bullets li,
+.cv--pdf-export .cv-professional__sidebar .cv-section__title {
+  font-size: 9pt;
+}
+
+.cv--pdf-export .cv-timeline-entry {
+  margin-bottom: 0.5rem;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.65rem 0.85rem;
+}
+
+.cv--pdf-export .cv-timeline-entry__dates {
+  font-size: 9pt;
+}
+
+.cv--pdf-export .cv-timeline-entry__title {
+  font-size: 10pt;
+}
+
+.cv--pdf-export .cv-timeline-entry__subtitle,
+.cv--pdf-export .cv-timeline-entry__extra {
+  font-size: 9.5pt;
+}
+
+.cv--pdf-export .cv-timeline-entry__extra {
+  margin: 0.12rem 0 0;
+  font-style: normal;
+  color: #374151;
+}
+
+.cv--pdf-export .cv-creative__main {
+  padding: 0.65rem 1.1rem 0.55rem;
+}
+
+.cv--pdf-export .cv-creative__name {
+  font-size: 17pt;
+}
+
+.cv--pdf-export .cv-creative__photo {
+  width: 84px;
+  height: 84px;
+}
+
+.cv--pdf-export .cv-attachments,
+.cv--pdf-export .cv-attachments__note {
+  display: none !important;
 }
 
 /* Header */
@@ -149,6 +325,13 @@
   color: #6b7280;
 }
 
+.cv-education__extra {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #374151;
+}
+
 /* Lists */
 .cv-bullets {
   margin: 0;
@@ -232,6 +415,25 @@
 
 .cv-project-name {
   font-weight: 600;
+  display: block;
+}
+
+.cv-project-desc {
+  margin: 0.1rem 0 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.cv-bullets--projects li {
+  margin-bottom: 0.35rem;
+}
+
+.cv-timeline-entry__extra {
+  margin: 0.15rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #374151;
 }
 
 .cv-text {

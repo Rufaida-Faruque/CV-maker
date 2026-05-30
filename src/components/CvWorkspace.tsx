@@ -42,6 +42,7 @@ function formatError(err: unknown): string {
 export default function CvWorkspace() {
   const { user, accessToken, signOut } = useAuth();
   const cvRef = useRef<HTMLDivElement>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
 
   const [record, setRecord] = useState<CvRecord | null>(null);
   const [store, setStore] = useState<CvStore | null>(null);
@@ -167,7 +168,8 @@ export default function CvWorkspace() {
   }, [dirty, record, content, persistStore]);
 
   async function handleDownload() {
-    if (!cvRef.current || downloading || !content) return;
+    const exportEl = exportRef.current;
+    if (!exportEl || downloading || !content) return;
     setDownloading(true);
     setError(null);
     try {
@@ -179,7 +181,7 @@ export default function CvWorkspace() {
         ? `${name.replace(/\s+/g, "_")}_CV.pdf`
         : "CV.pdf";
       await downloadCvPdf(
-        cvRef.current,
+        exportEl,
         content.attachments ?? [],
         fileName,
       );
@@ -345,6 +347,12 @@ export default function CvWorkspace() {
           onCancel={() => setShowSyncModal(false)}
           onConfirm={handleSyncConfirm}
         />
+      )}
+
+      {content && (
+        <div className="cv-pdf-mount" aria-hidden="true">
+          <CVDocument ref={exportRef} content={content} />
+        </div>
       )}
     </div>
   );

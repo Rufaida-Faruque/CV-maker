@@ -5,7 +5,7 @@ export const sectionCatalog: SectionCatalogItem[] = [
     type: "education",
     title: "Education",
     column: "main",
-    defaultData: { degree: "", institution: "", period: "" },
+    defaultData: { degree: "", institution: "", period: "", additionalInfo: "" },
   },
   {
     type: "bulletList",
@@ -29,7 +29,7 @@ export const sectionCatalog: SectionCatalogItem[] = [
     type: "projects",
     title: "Projects",
     column: "main",
-    defaultData: { items: [{ name: "", url: "" }] },
+    defaultData: { items: [{ name: "", url: "", description: "" }] },
   },
   {
     type: "personalDetails",
